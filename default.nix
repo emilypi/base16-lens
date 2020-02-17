@@ -4,18 +4,18 @@ let
 
   inherit (nixpkgs) pkgs;
 
-  f = { mkDerivation, base, base32, bytestring, Cabal
+  f = { mkDerivation, base, base16, bytestring, Cabal
       , cabal-doctest, doctest, lens, stdenv, text
       }:
       mkDerivation {
-        pname = "base32-lens";
+        pname = "base16-lens";
         version = "0.1.0.0";
         src = ./.;
         setupHaskellDepends = [ base Cabal cabal-doctest ];
-        libraryHaskellDepends = [ base base32 bytestring lens text ];
+        libraryHaskellDepends = [ base base16 bytestring lens text ];
         testHaskellDepends = [ base doctest lens ];
-        homepage = "https://github.com/emilypi/base32-lens";
-        description = "Optics for the Base32 library";
+        homepage = "https://github.com/emilypi/base16-lens";
+        description = "Optics for the Base16 library";
         license = stdenv.lib.licenses.bsd3;
       };
 
