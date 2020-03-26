@@ -2,17 +2,17 @@
 {-# LANGUAGE ViewPatterns #-}
 -- |
 -- Module       : Data.Text.Encoding.Base16.Lens
--- Copyright    : (c) 2019 Emily Pillmore
+-- Copyright    : (c) 2020 Emily Pillmore
 -- License      : BSD-style
 --
 -- Maintainer   : Emily Pillmore <emilypi@cohomolo.gy>
 -- Stability    : Experimental
 -- Portability  : non-portable
 --
--- This module contains 'Prism''s for Base16-encoding and
--- decoding 'ByteString' values.
+-- This module contains 'Prism's Base16-encoding and
+-- decoding lazy 'Text' values.
 --
-module Data.ByteString.Base16.Lens
+module Data.Text.Lazy.Encoding.Base16.Lens
 ( -- * Prisms
   _Hex
 , _Base16
@@ -21,26 +21,24 @@ module Data.ByteString.Base16.Lens
 , pattern Base16
 ) where
 
-
 import Control.Lens
 
-import Data.ByteString (ByteString)
-import qualified Data.ByteString.Base16 as B16
+import Data.Text.Lazy (Text)
+import qualified Data.Text.Lazy.Encoding.Base16 as B16TL
 
 
 -- $setup
 --
 -- >>> import Control.Lens
--- >>> import Data.ByteString.Base16.Lens
+-- >>> import Data.Text.Lazy.Encoding.Base16.Lens
 --
 -- >>> :set -XOverloadedStrings
 -- >>> :set -XTypeApplications
 
-
 -- -------------------------------------------------------------------------- --
 -- Optics
 
--- | A 'Prism'' into the Base16 encoding of a 'ByteString' value
+-- | A 'Prism'' into the Base16 encoding of a lazy 'Text' value
 --
 -- >>> _Base16 # "Sun"
 -- "53756e"
@@ -48,14 +46,14 @@ import qualified Data.ByteString.Base16 as B16
 -- >>> "53756e" ^? _Base16
 -- Just "Sun"
 --
-_Base16 :: Prism' ByteString ByteString
-_Base16 = prism' B16.encodeBase16' $ \s -> case B16.decodeBase16 s of
+_Base16 :: Prism' Text Text
+_Base16 = prism' B16TL.encodeBase16 $ \s -> case B16TL.decodeBase16 s of
     Left _ -> Nothing
     Right a -> Just a
 {-# INLINE _Base16 #-}
 
--- | A 'Prism'' into the Base16 encoding of a 'ByteString' value. This is an
--- alias for '_Base16'.
+-- | A 'Prism'' into the Base16 encoding of a lazy 'Text' value. This
+-- function is an alias for '_Base16'
 --
 -- >>> _Hex # "Sun"
 -- "53756e"
@@ -63,8 +61,8 @@ _Base16 = prism' B16.encodeBase16' $ \s -> case B16.decodeBase16 s of
 -- >>> "53756e" ^? _Hex
 -- Just "Sun"
 --
-_Hex :: Prism' ByteString ByteString
-_Hex = prism' B16.encodeBase16' $ \s -> case B16.decodeBase16 s of
+_Hex :: Prism' Text Text
+_Hex = prism' B16TL.encodeBase16 $ \s -> case B16TL.decodeBase16 s of
     Left _ -> Nothing
     Right a -> Just a
 {-# INLINE _Hex #-}
@@ -72,14 +70,14 @@ _Hex = prism' B16.encodeBase16' $ \s -> case B16.decodeBase16 s of
 -- -------------------------------------------------------------------------- --
 -- Patterns
 
--- | Bidirectional pattern synonym for Base16-encoded 'ByteString' values.
+-- | Bidirectional pattern synonym for Base16-encoded lazy 'Text' values.
 --
-pattern Hex :: ByteString -> ByteString
+pattern Hex :: Text -> Text
 pattern Hex a <- (preview _Hex -> Just a) where
     Hex a = _Hex # a
 
--- | Bidirectional pattern synonym for Base16-encoded 'ByteString' values.
+-- | Bidirectional pattern synonym for Base16-encoded lazy 'Text' values.
 --
-pattern Base16 :: ByteString -> ByteString
+pattern Base16 :: Text -> Text
 pattern Base16 a <- (preview _Base16 -> Just a) where
     Base16 a = _Base16 # a

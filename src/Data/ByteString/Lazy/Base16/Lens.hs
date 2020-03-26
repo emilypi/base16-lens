@@ -10,9 +10,9 @@
 -- Portability  : non-portable
 --
 -- This module contains 'Prism''s for Base16-encoding and
--- decoding 'ByteString' values.
+-- decoding lazy 'ByteString' values.
 --
-module Data.ByteString.Base16.Lens
+module Data.ByteString.Lazy.Base16.Lens
 ( -- * Prisms
   _Hex
 , _Base16
@@ -24,14 +24,14 @@ module Data.ByteString.Base16.Lens
 
 import Control.Lens
 
-import Data.ByteString (ByteString)
-import qualified Data.ByteString.Base16 as B16
+import Data.ByteString.Lazy (ByteString)
+import qualified Data.ByteString.Lazy.Base16 as B16L
 
 
 -- $setup
 --
 -- >>> import Control.Lens
--- >>> import Data.ByteString.Base16.Lens
+-- >>> import Data.ByteString.Lazy.Base16.Lens
 --
 -- >>> :set -XOverloadedStrings
 -- >>> :set -XTypeApplications
@@ -49,13 +49,13 @@ import qualified Data.ByteString.Base16 as B16
 -- Just "Sun"
 --
 _Base16 :: Prism' ByteString ByteString
-_Base16 = prism' B16.encodeBase16' $ \s -> case B16.decodeBase16 s of
+_Base16 = prism' B16L.encodeBase16' $ \s -> case B16L.decodeBase16 s of
     Left _ -> Nothing
     Right a -> Just a
 {-# INLINE _Base16 #-}
 
--- | A 'Prism'' into the Base16 encoding of a 'ByteString' value. This is an
--- alias for '_Base16'.
+-- | A 'Prism'' into the Base16 encoding of a lazy 'ByteString' value. This function
+-- is an alias of '_Base16'.
 --
 -- >>> _Hex # "Sun"
 -- "53756e"
@@ -64,7 +64,7 @@ _Base16 = prism' B16.encodeBase16' $ \s -> case B16.decodeBase16 s of
 -- Just "Sun"
 --
 _Hex :: Prism' ByteString ByteString
-_Hex = prism' B16.encodeBase16' $ \s -> case B16.decodeBase16 s of
+_Hex = prism' B16L.encodeBase16' $ \s -> case B16L.decodeBase16 s of
     Left _ -> Nothing
     Right a -> Just a
 {-# INLINE _Hex #-}
@@ -72,13 +72,13 @@ _Hex = prism' B16.encodeBase16' $ \s -> case B16.decodeBase16 s of
 -- -------------------------------------------------------------------------- --
 -- Patterns
 
--- | Bidirectional pattern synonym for Base16-encoded 'ByteString' values.
+-- | Bidirectional pattern synonym for Base16-encoded lazy 'ByteString' values.
 --
 pattern Hex :: ByteString -> ByteString
 pattern Hex a <- (preview _Hex -> Just a) where
     Hex a = _Hex # a
 
--- | Bidirectional pattern synonym for Base16-encoded 'ByteString' values.
+-- | Bidirectional pattern synonym for Base16-encoded lazy 'ByteString' values.
 --
 pattern Base16 :: ByteString -> ByteString
 pattern Base16 a <- (preview _Base16 -> Just a) where
