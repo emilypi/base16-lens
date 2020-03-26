@@ -54,7 +54,8 @@ _Base16 = prism' B16.encodeBase16' $ \s -> case B16.decodeBase16 s of
     Right a -> Just a
 {-# INLINE _Base16 #-}
 
--- | A 'Prism'' into the Base16 encoding of a 'ByteString' value
+-- | A 'Prism'' into the Base16 encoding of a 'ByteString' value. This is an
+-- alias for '_Base16'.
 --
 -- >>> _Hex # "Sun"
 -- "53756e"
