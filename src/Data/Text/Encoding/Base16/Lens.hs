@@ -55,10 +55,10 @@ _Hex = prism' B16T.encodeBase16 $ \s -> case B16T.decodeBase16 s of
 
 -- | A 'Prism'' into the Base16 encoding of a 'Text' value
 --
--- >>> _Hex # "Sun"
+-- >>> _Base16 # "Sun"
 -- "53756e"
 --
--- >>> "53756e" ^? _Hex
+-- >>> "53756e" ^? _Base16
 -- Just "Sun"
 --
 _Base16 :: Prism' Text Text

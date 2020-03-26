@@ -40,10 +40,10 @@ import qualified Data.Text.Lazy.Encoding.Base16 as B16TL
 
 -- | A 'Prism'' into the Base16 encoding of a lazy 'Text' value
 --
--- >>> _Hex # "Sun"
+-- >>> _Base16 # "Sun"
 -- "53756e"
 --
--- >>> "53756e" ^? _Hex
+-- >>> "53756e" ^? _Base16
 -- Just "Sun"
 --
 _Base16 :: Prism' Text Text
