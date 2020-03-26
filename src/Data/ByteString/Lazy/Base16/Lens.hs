@@ -2,12 +2,12 @@
 {-# LANGUAGE ViewPatterns #-}
 -- |
 -- Module       : Data.Text.Encoding.Base16.Lens
--- Copyright 	: (c) 2019 Emily Pillmore
--- License	: BSD-style
+-- Copyright    : (c) 2019 Emily Pillmore
+-- License      : BSD-style
 --
--- Maintainer	: Emily Pillmore <emilypi@cohomolo.gy>
--- Stability	: Experimental
--- Portability	: non-portable
+-- Maintainer   : Emily Pillmore <emilypi@cohomolo.gy>
+-- Stability    : Experimental
+-- Portability  : non-portable
 --
 -- This module contains 'Prism''s for Base16-encoding and
 -- decoding lazy 'ByteString' values.
