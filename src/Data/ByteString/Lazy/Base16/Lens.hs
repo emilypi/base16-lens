@@ -9,16 +9,19 @@
 -- Stability    : Experimental
 -- Portability  : non-portable
 --
--- This module contains 'Prism''s for Base16-encoding and
+-- This module contains 'Prism''s and 'Iso''s for Base16-encoding and
 -- decoding lazy 'ByteString' values.
 --
 module Data.ByteString.Lazy.Base16.Lens
 ( -- * Prisms
   _Hex
 , _Base16
+  -- * Isos
+, _Base16Lenient
   -- * Patterns
 , pattern Hex
 , pattern Base16
+, pattern Base16Lenient
 ) where
 
 
@@ -40,7 +43,7 @@ import qualified Data.ByteString.Lazy.Base16 as B16L
 -- -------------------------------------------------------------------------- --
 -- Optics
 
--- | A 'Prism'' into the Base16 encoding of a 'ByteString' value
+-- | A 'Prism'' into the Base16 encoding of a 'ByteString' value.
 --
 -- >>> _Base16 # "Sun"
 -- "53756e"
@@ -69,6 +72,18 @@ _Hex = prism' B16L.encodeBase16' $ \s -> case B16L.decodeBase16 s of
     Right a -> Just a
 {-# INLINE _Hex #-}
 
+-- | A 'Iso'' into the Base16 encoding of a leniently decoded 'ByteString' value.
+--
+-- >>> _Base16Lenient # "Sun"
+-- "53756e"
+--
+-- >>> "53756e" ^. _Base16
+-- "Sun"
+--
+_Base16Lenient :: Iso' ByteString ByteString
+_Base16Lenient = iso B16L.decodeBase16Lenient B16L.encodeBase16'
+{-# INLINE _Base16Lenient #-}
+
 -- -------------------------------------------------------------------------- --
 -- Patterns
 
@@ -83,3 +98,9 @@ pattern Hex a <- (preview _Hex -> Just a) where
 pattern Base16 :: ByteString -> ByteString
 pattern Base16 a <- (preview _Base16 -> Just a) where
     Base16 a = _Base16 # a
+
+-- | Bidirectional pattern synonym for Base16-encoded 'ByteString' values.
+--
+pattern Base16Lenient :: ByteString -> ByteString
+pattern Base16Lenient a <- (view (from _Base16Lenient) -> a) where
+    Base16Lenient a = view _Base16 a

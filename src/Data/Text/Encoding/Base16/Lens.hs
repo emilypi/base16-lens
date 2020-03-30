@@ -9,16 +9,18 @@
 -- Stability    : Experimental
 -- Portability  : non-portable
 --
--- This module contains 'Prism's Base16-encoding and
+-- This module contains 'Prism''s and 'Iso''s Base16-encoding and
 -- decoding 'Text' values.
 --
 module Data.Text.Encoding.Base16.Lens
 ( -- * Prisms
   _Hex
 , _Base16
+, _Base16Lenient
   -- * Patterns
 , pattern Hex
 , pattern Base16
+, pattern Base16Lenient
 ) where
 
 import Control.Lens
@@ -38,6 +40,20 @@ import qualified Data.Text.Encoding.Base16 as B16T
 -- -------------------------------------------------------------------------- --
 -- Optics
 
+-- | A 'Prism'' into the Base16 encoding of a 'Text' value
+--
+-- >>> _Base16 # "Sun"
+-- "53756e"
+--
+-- >>> "53756e" ^? _Base16
+-- Just "Sun"
+--
+_Base16 :: Prism' Text Text
+_Base16 = prism' B16T.encodeBase16 $ \s -> case B16T.decodeBase16 s of
+    Left _ -> Nothing
+    Right a -> Just a
+{-# INLINE _Base16 #-}
+
 -- | A 'Prism'' into the Base16 encoding of a 'Text' value. This is an
 -- alias for '_Base16'.
 --
@@ -53,19 +69,17 @@ _Hex = prism' B16T.encodeBase16 $ \s -> case B16T.decodeBase16 s of
     Right a -> Just a
 {-# INLINE _Hex #-}
 
--- | A 'Prism'' into the Base16 encoding of a 'Text' value
+-- | A 'Iso'' into the Base16 encoding of a 'ByteString' value
 --
--- >>> _Base16 # "Sun"
+-- >>> _Base16Lenient # "Sun"
 -- "53756e"
 --
--- >>> "53756e" ^? _Base16
--- Just "Sun"
+-- >>> "53756e" ^. _Base16Lenient
+-- "Sun"
 --
-_Base16 :: Prism' Text Text
-_Base16 = prism' B16T.encodeBase16 $ \s -> case B16T.decodeBase16 s of
-    Left _ -> Nothing
-    Right a -> Just a
-{-# INLINE _Base16 #-}
+_Base16Lenient :: Iso' Text Text
+_Base16Lenient = iso B16T.decodeBase16Lenient B16T.encodeBase16
+{-# INLINE _Base16Lenient #-}
 
 -- -------------------------------------------------------------------------- --
 -- Patterns
@@ -81,3 +95,10 @@ pattern Hex a <- (preview _Hex -> Just a) where
 pattern Base16 :: Text -> Text
 pattern Base16 a <- (preview _Base16 -> Just a) where
     Base16 a = _Base16 # a
+
+-- | Bidirectional pattern synonym for leniently decoded,
+-- Base16-encoded 'ByteString' values.
+--
+pattern Base16Lenient :: Text -> Text
+pattern Base16Lenient a <- (view (from _Base16Lenient) -> a) where
+    Base16Lenient a = view _Base16 a
