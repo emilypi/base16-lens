@@ -1,6 +1,6 @@
 cabal-version:      1.24
 name:               base16-lens
-version:            0.1.1.0
+version:            0.1.2.0
 synopsis:           Optics for the Base16 library
 description:        Prisms and pattern synonyms for the Base16 library
 homepage:           https://github.com/emilypi/base16-lens
