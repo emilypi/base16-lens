@@ -2,7 +2,7 @@
 {-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE Trustworthy #-}
 -- |
--- Module       : Data.ByteString.Lazy.Base16.Lens
+-- Module       : Data.ByteString.Short.Base16.Lens
 -- Copyright    : (c) 2019-2020 Emily Pillmore
 -- License      : BSD-style
 --
@@ -11,9 +11,9 @@
 -- Portability  : non-portable
 --
 -- This module contains 'Prism''s and 'Iso''s for Base16-encoding and
--- decoding lazy 'ByteString' values.
+-- decoding 'ShortByteString' values.
 --
-module Data.ByteString.Lazy.Base16.Lens
+module Data.ByteString.Short.Base16.Lens
 ( -- * Prisms
   _Hex
 , _Base16
@@ -28,14 +28,14 @@ module Data.ByteString.Lazy.Base16.Lens
 
 import Control.Lens
 
-import Data.ByteString.Lazy (ByteString)
-import qualified Data.ByteString.Lazy.Base16 as B16L
+import Data.ByteString.Short (ShortByteString)
+import qualified Data.ByteString.Short.Base16 as B16S
 
 
 -- $setup
 --
 -- >>> import Control.Lens
--- >>> import Data.ByteString.Lazy.Base16.Lens
+-- >>> import Data.ByteString.Short.Base16.Lens
 --
 -- >>> :set -XOverloadedStrings
 -- >>> :set -XTypeApplications
@@ -44,7 +44,7 @@ import qualified Data.ByteString.Lazy.Base16 as B16L
 -- -------------------------------------------------------------------------- --
 -- Optics
 
--- | A 'Prism'' into the Base16 encoding of a 'ByteString' value.
+-- | A 'Prism'' into the Base16 encoding of a 'ShortByteString' value.
 --
 -- >>> _Base16 # "Sun"
 -- "53756e"
@@ -52,13 +52,13 @@ import qualified Data.ByteString.Lazy.Base16 as B16L
 -- >>> "53756e" ^? _Base16
 -- Just "Sun"
 --
-_Base16 :: Prism' ByteString ByteString
-_Base16 = prism' B16L.encodeBase16' $ \s -> case B16L.decodeBase16 s of
+_Base16 :: Prism' ShortByteString ShortByteString
+_Base16 = prism' B16S.encodeBase16' $ \s -> case B16S.decodeBase16 s of
     Left _ -> Nothing
     Right a -> Just a
 {-# INLINE _Base16 #-}
 
--- | A 'Prism'' into the Base16 encoding of a lazy 'ByteString' value. This function
+-- | A 'Prism'' into the Base16 encoding of a lazy 'ShortByteString' value. This function
 -- is an alias of '_Base16'.
 --
 -- >>> _Hex # "Sun"
@@ -67,13 +67,13 @@ _Base16 = prism' B16L.encodeBase16' $ \s -> case B16L.decodeBase16 s of
 -- >>> "53756e" ^? _Hex
 -- Just "Sun"
 --
-_Hex :: Prism' ByteString ByteString
-_Hex = prism' B16L.encodeBase16' $ \s -> case B16L.decodeBase16 s of
+_Hex :: Prism' ShortByteString ShortByteString
+_Hex = prism' B16S.encodeBase16' $ \s -> case B16S.decodeBase16 s of
     Left _ -> Nothing
     Right a -> Just a
 {-# INLINE _Hex #-}
 
--- | A 'Iso'' into the Base16 encoding of a leniently decoded 'ByteString' value.
+-- | A 'Iso'' into the Base16 encoding of a leniently decoded 'ShortByteString' value.
 --
 -- >>> _Base16Lenient # "Sun"
 -- "53756e"
@@ -81,28 +81,28 @@ _Hex = prism' B16L.encodeBase16' $ \s -> case B16L.decodeBase16 s of
 -- >>> "53756e" ^. _Base16
 -- "Sun"
 --
-_Base16Lenient :: Iso' ByteString ByteString
-_Base16Lenient = iso B16L.decodeBase16Lenient B16L.encodeBase16'
+_Base16Lenient :: Iso' ShortByteString ShortByteString
+_Base16Lenient = iso B16S.decodeBase16Lenient B16S.encodeBase16'
 {-# INLINE _Base16Lenient #-}
 
 -- -------------------------------------------------------------------------- --
 -- Patterns
 
--- | Bidirectional pattern synonym for Base16-encoded lazy 'ByteString' values.
+-- | Bidirectional pattern synonym for Base16-encoded lazy 'ShortByteString' values.
 --
-pattern Hex :: ByteString -> ByteString
+pattern Hex :: ShortByteString -> ShortByteString
 pattern Hex a <- (preview _Hex -> Just a) where
     Hex a = _Hex # a
 
--- | Bidirectional pattern synonym for Base16-encoded lazy 'ByteString' values.
+-- | Bidirectional pattern synonym for Base16-encoded lazy 'ShortByteString' values.
 --
-pattern Base16 :: ByteString -> ByteString
+pattern Base16 :: ShortByteString -> ShortByteString
 pattern Base16 a <- (preview _Base16 -> Just a) where
     Base16 a = _Base16 # a
 
--- | Bidirectional pattern synonym for Base16-encoded 'ByteString' values.
+-- | Bidirectional pattern synonym for Base16-encoded 'ShortByteString' values.
 --
-pattern Base16Lenient :: ByteString -> ByteString
+pattern Base16Lenient :: ShortByteString -> ShortByteString
 pattern Base16Lenient a <- (view _Base16Lenient -> a) where
     Base16Lenient a = _Base16Lenient # a
 {-# COMPLETE Base16Lenient #-}

@@ -1,8 +1,9 @@
 {-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE ViewPatterns #-}
+{-# LANGUAGE Trustworthy #-}
 -- |
--- Module       : Data.Text.Encoding.Base16.Lens
--- Copyright    : (c) 2019 Emily Pillmore
+-- Module       : Data.ByteString.Base16.Lens
+-- Copyright    : (c) 2019-2020 Emily Pillmore
 -- License      : BSD-style
 --
 -- Maintainer   : Emily Pillmore <emilypi@cohomolo.gy>
@@ -104,5 +105,6 @@ pattern Base16 a <- (preview _Base16 -> Just a) where
 -- Base16-encoded 'ByteString' values.
 --
 pattern Base16Lenient :: ByteString -> ByteString
-pattern Base16Lenient a <- (view (from _Base16Lenient) -> a) where
-    Base16Lenient a = view _Base16 a
+pattern Base16Lenient a <- (view _Base16Lenient -> a) where
+    Base16Lenient a = _Base16Lenient # a
+{-# COMPLETE Base16Lenient #-}

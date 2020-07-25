@@ -1,8 +1,9 @@
 {-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE ViewPatterns #-}
+{-# LANGUAGE Trustworthy #-}
 -- |
 -- Module       : Data.Text.Encoding.Base16.Lens
--- Copyright    : (c) 2020 Emily Pillmore
+-- Copyright    : (c) 2019-2020 Emily Pillmore
 -- License      : BSD-style
 --
 -- Maintainer   : Emily Pillmore <emilypi@cohomolo.gy>
@@ -69,7 +70,7 @@ _Hex = prism' B16T.encodeBase16 $ \s -> case B16T.decodeBase16 s of
     Right a -> Just a
 {-# INLINE _Hex #-}
 
--- | A 'Iso'' into the Base16 encoding of a 'ByteString' value
+-- | A 'Iso'' into the Base16 encoding of a 'Text' value
 --
 -- >>> _Base16Lenient # "Sun"
 -- "53756e"
@@ -97,8 +98,9 @@ pattern Base16 a <- (preview _Base16 -> Just a) where
     Base16 a = _Base16 # a
 
 -- | Bidirectional pattern synonym for leniently decoded,
--- Base16-encoded 'ByteString' values.
+-- Base16-encoded 'Text' values.
 --
 pattern Base16Lenient :: Text -> Text
-pattern Base16Lenient a <- (view (from _Base16Lenient) -> a) where
-    Base16Lenient a = view _Base16 a
+pattern Base16Lenient a <- (view _Base16Lenient -> a) where
+    Base16Lenient a = _Base16Lenient # a
+{-# COMPLETE Base16Lenient #-}
