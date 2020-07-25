@@ -100,7 +100,7 @@ pattern Base16 a <- (preview _Base16 -> Just a) where
     Base16 a = _Base16 # a
 
 -- | Bidirectional pattern synonym for leniently decoded,
--- Base16-encoded 'ByteString' values.
+-- Base16-encoded 'Text' values.
 --
 pattern Base16Lenient :: Text -> Text
 pattern Base16Lenient a <- (view _Base16Lenient -> a) where
