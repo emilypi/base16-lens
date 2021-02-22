@@ -1,5 +1,10 @@
-{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE CPP #-}
+#if MIN_VERSION_lens(5,0,0)
 {-# LANGUAGE Safe #-}
+#else
+{-# LANGUAGE Trustworthy #-}
+#endif
 -- |
 -- Module       : Data.Text.Encoding.Base16.Error.Lens
 -- Copyright    : (c) 2019-2020 Emily Pillmore
@@ -27,14 +32,14 @@ import Data.Text.Encoding.Base16.Error (Base16Error(..))
 
 -- | A 'Prism'' into the 'DecodeError' case of a 'Base16Error'
 --
-_DecodeError :: forall err. Prism' (Base16Error err) Text
-_DecodeError = prism' DecodeError $ \e -> case e of
+_DecodeError :: Prism' (Base16Error err) Text
+_DecodeError = prism' DecodeError $ \case
     DecodeError t -> Just t
     ConversionError{} -> Nothing
 
 -- | A 'Prism'' into the 'ConversionError' case of a 'Base16Error'
 --
-_ConversionError :: forall err. Prism' (Base16Error err) err
-_ConversionError = prism' ConversionError $ \e -> case e of
+_ConversionError :: Prism' (Base16Error err) err
+_ConversionError = prism' ConversionError $ \case
     ConversionError err -> Just err
     DecodeError{} -> Nothing

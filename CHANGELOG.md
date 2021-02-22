@@ -1,5 +1,9 @@
 # Revision history for base64-lens
 
+## 0.1.3.2
+
+* Conditional API around lens-4.x vs lens-5 safe pragmas
+
 ## 0.1.3.1
 
 * Mark trustworthy modules as safe
