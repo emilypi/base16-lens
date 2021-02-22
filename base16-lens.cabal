@@ -8,8 +8,8 @@ bug-reports:        https://github.com/emilypi/base16-lens/issues
 license:            BSD3
 license-file:       LICENSE
 author:             Emily Pillmore
-maintainer:         emilypi@cohomolo.gy
-copyright:          (c) 2020 Emily Pillmore
+maintainer:         Emily Pillmore <emilypi@cohomolo.gy>
+copyright:          (c) 2020-2021 Emily Pillmore
 category:           Data
 build-type:         Custom
 extra-source-files:
@@ -21,7 +21,7 @@ tested-with:
 
 source-repository head
   type:     git
-  location: https://github.com/emilypi/base16.git
+  location: https://github.com/emilypi/base16-lens.git
 
 custom-setup
   setup-depends:
