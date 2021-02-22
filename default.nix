@@ -5,20 +5,19 @@ let
   inherit (nixpkgs) pkgs;
 
   f = { mkDerivation, base, base16, bytestring, Cabal
-      , cabal-doctest, doctest, lens, stdenv, text, text-short
+      , cabal-doctest, lens, lib, text, text-short
       }:
       mkDerivation {
         pname = "base16-lens";
-        version = "0.1.3.0";
+        version = "0.1.3.1";
         src = ./.;
         setupHaskellDepends = [ base Cabal cabal-doctest ];
         libraryHaskellDepends = [
           base base16 bytestring lens text text-short
         ];
-        testHaskellDepends = [ base doctest lens ];
         homepage = "https://github.com/emilypi/base16-lens";
         description = "Optics for the Base16 library";
-        license = stdenv.lib.licenses.bsd3;
+        license = lib.licenses.bsd3;
       };
 
   haskellPackages = if compiler == "default"
