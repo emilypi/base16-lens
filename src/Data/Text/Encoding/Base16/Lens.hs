@@ -1,6 +1,6 @@
 {-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE ViewPatterns #-}
-{-# LANGUAGE Trustworthy #-}
+{-# LANGUAGE Safe #-}
 -- |
 -- Module       : Data.Text.Encoding.Base16.Lens
 -- Copyright    : (c) 2019-2020 Emily Pillmore

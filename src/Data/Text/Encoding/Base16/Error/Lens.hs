@@ -1,5 +1,5 @@
 {-# LANGUAGE RankNTypes #-}
-{-# LANGUAGE Trustworthy #-}
+{-# LANGUAGE Safe #-}
 -- |
 -- Module       : Data.Text.Encoding.Base16.Error.Lens
 -- Copyright    : (c) 2019-2020 Emily Pillmore

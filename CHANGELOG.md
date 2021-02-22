@@ -1,5 +1,10 @@
 # Revision history for base64-lens
 
+## 0.1.3.1
+
+* Mark trustworthy modules as safe
+* Bump bounds for lens-5 support
+
 ## 0.1.3.0
 
 * Bugfix - `_Base16Lenient` pattern now correctly matches and unmatches on unencoded data.
